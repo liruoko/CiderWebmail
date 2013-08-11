@@ -46,7 +46,7 @@ function start_message_view_resize(event) {
     function drop(event) {
         document.removeEvent('mousemove', drag);
         document.removeEvent('mouseup', drop);
-        Cookie.write($('content').hasClass('message_display') ? 'message_divider_message_display_top' : 'message_divider_top', event.client.y, {duration: 365});
+        Cookie.write(document.getElementById('content').classList.contains('message_display') ? 'message_divider_message_display_top' : 'message_divider_top', event.client.y, {duration: 365});
     }
     document.addEvents({mousemove: drag, mouseup: drop});
     stop_propagation(event);
@@ -66,23 +66,23 @@ function check_touch_event_support(){
 window.addEvent('load', function() {
     touch_enabled = check_touch_event_support();
 
-    if (!touch_enabled) { $$('#controlpanel .activeborder').addEvent('mousedown', start_controlpanel_resize); }
+    if (!touch_enabled) { document.querySelector('#controlpanel .activeborder').addEventListener('mousedown', start_controlpanel_resize, false); }
 
     var control_panel_width = Cookie.read('control_panel_width')
     if (control_panel_width) {
-        $('controlpanel').style.width = control_panel_width + 'px';
-        $('content').style.left = control_panel_width + 'px';
+        document.getElementById('controlpanel').style.width = control_panel_width + 'px';
+        document.getElementById('content').style.left = control_panel_width + 'px';
     }
 
-    var message_divider = $('message_divider');
+    var message_divider = document.getElementById('message_divider');
     if (message_divider) {
         if (!touch_enabled) { message_divider.addEvent('mousedown', start_message_view_resize); }
 
 
         var message_divider_top = Cookie.read('message_divider_top');
-        if ($('messages_pane') && message_divider_top) {
-            $('messages_pane').style.bottom = $('messages_pane').parentNode.offsetHeight - message_divider_top + 'px';
-            $('message_view').style.top     = message_divider_top + 'px';
+        if (document.getElementById('messages_pane') && message_divider_top) {
+            document.getElementById('messages_pane').style.bottom = document.getElementById('messages_pane').parentNode.offsetHeight - message_divider_top + 'px';
+            document.getElementById('message_view').style.top     = message_divider_top + 'px';
             message_divider.style.top  = message_divider_top + 'px';
         }
     }
